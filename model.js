@@ -6,9 +6,9 @@ var Post = new _mongoose.Schema({
     name    : String,
     comments : [{
       title : String,
-      body  : String
+      body  : String,
+      votes : {type: Number, default: 0},
     }],
-    votes   : {type: Number, default: 0},
     tag     : [String],
     created : {type: Date, default: Date.now},
 });
@@ -17,12 +17,10 @@ Post.statics.findByName = function(name, cb) {
   this.findOne({"name" : name}, cb);
 };
 
-Post.statics.countUpVotes = function(name, cb) {
-  this.update({name: name}, {$inc:{votes:1}}, cb);
-};
-
-Post.statics.countDownVotes = function(name, cb) {
-  this.update({name: name}, {$inc:{votes:-1}}, cb);
+Post.statics.countUpVotes = function(name, title, cb) {
+  var query  = {name:name, 'comments.title':title};
+  var update = {$inc:{'comments.$.votes':1}}; // 「$」は位置指定演算子
+  this.update(query, update, cb);
 };
 
 Post.statics.updateComments = function(name, comments, cb) {

@@ -12,10 +12,9 @@ switch (_cmd) {
     findByName(process.argv[3]);
     break;
   case "cuv" :
-    countUpVotes();
-    break;
-  case "cdv" :
-    countDownVotes();
+    var name   = process.argv[3];
+    var title  = process.argv[4];
+    countUpVotes(name, title);
     break;
   case "uc" :
     updateComments();
@@ -62,10 +61,8 @@ function updateComments() {
   });
 }
 
-function countUpVotes() {
-  var json = require('./input');
-
-  _Post.countUpVotes(json.name, function(err, numberAffected, raw) {
+function countUpVotes(name, title) {
+  _Post.countUpVotes(name, title, function(err, numberAffected, raw) {
     if (err) {
       console.log(err);
       process.exit();
@@ -74,23 +71,7 @@ function countUpVotes() {
     console.log('The number of updated documents was %d', numberAffected);
     console.log('The raw response from Mongo was %d', raw);
     console.log("completed update comments:");
-    findByName(json.name);
-  });
-}
-
-function countDownVotes() {
-  var json = require('./input');
-
-  _Post.countDownVotes(json.name, function(err, numberAffected, raw) {
-    if (err) {
-      console.log(err);
-      process.exit();
-    }
-
-    console.log('The number of updated documents was %d', numberAffected);
-    console.log('The raw response from Mongo was %d', raw);
-    console.log("completed update comments:");
-    findByName(json.name);
+    findByName(name);
   });
 }
 
