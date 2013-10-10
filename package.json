@@ -1,8 +1,11 @@
 {
-    "name": "mongoose-tutorial"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
+  "name": "mongoose-tutorial",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+      "test": "PATH=./node_modules/.bin:$PATH; mocha"
+  },
+  "dependencies": {
       "mongoose": "*",
       "should": "*",
       "config": "*"
