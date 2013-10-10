@@ -32,8 +32,8 @@ describe('#findByName', function() {
       if (err) {
         console.log(err);
       }
+      done();
     });
-    done();
   });
 });
 
