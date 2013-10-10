@@ -33,7 +33,7 @@ switch (_cmd) {
 function save(json) {
   var post = new _Post();
   post.name    = json.name;
-  post.message = json.message;
+  post.comments = json.comments;
   post.tag     = json.tag;
   post.save(function(err) {
     if (err) {
@@ -49,7 +49,7 @@ function save(json) {
 function find() {
   _Post.find({}, function(err, docs) {
     if(docs.length === 0) {
-      console.log("count zero");
+      console.log("empty");
       process.exit();
     }
 

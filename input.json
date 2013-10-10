@@ -1,5 +1,7 @@
 {
   "name" : "yyyyy",
-  "message" : "aaaaaa",
+  "comments" : [
+    {"body" : "xxxxx"},
+    {"body" : "yyyyy"}],
   "tag" : ["AAA","BBB","CCC"]
 }
