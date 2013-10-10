@@ -3,8 +3,10 @@ var _database = 'practice';
 var _db = _mongoose.connect('mongodb://localhost/' + _database);
 
 var Post = new _mongoose.Schema({
-    name    : {type: String, required: true},
-    message : {type: String, required: true}
+    name    : {type: String},
+    message : {type: String},
+    tag     : [String],
+    created : {type: Date, default: Date.now},
 });
 
 Post.statics.findByName = function(name, cb) {

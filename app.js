@@ -1,71 +1,84 @@
-var _Post    = require('./model').Post;
+var _Post  = require('./model').Post;
+var _cmd = process.argv[2];
 
-console.log("intput [cmd],[name],[message]");
-process.stdin.resume();
-process.stdin.setEncoding('utf8');
+switch (_cmd) {
+  case "s" :
+    try {
+      var json = require('./input');
+        save(json);
+    } catch (e) {
+      console.log(e);
+    }
+    break;
 
-
-process.stdin.on('data', function(chunk) {
-  chunk = chunk.replace("\n", "");
-  console.log("input:" + chunk);
-  var cmd     = chunk.split(',')[0];
-  var name    = chunk.split(',')[1];
-  var message = chunk.split(',')[2];
-
-  switch (cmd) {
-    case "s" :
-      save(name, message);
-      break;
-
-    case "f" :
-      find();
-      break;
+  case "f" :
+    find();
+    break;
 
 
-    case "fn" :
-      findByName(name);
-      break;
+  case "fn" :
+    findByName(process.argv[3]);
+    break;
 
-    default :
-      console.log("not found command:" + cmd);
-      break;
-  }
-});
 
-function save(name, message) {
-  console.log("exec save");
+  case "r" :
+    remove();
+    break;
+
+  default :
+    console.log("not found command:" + _cmd);
+    break;
+}
+
+function save(json) {
   var post = new _Post();
-  post.name    = name;
-  post.message = message;
+  post.name    = json.name;
+  post.message = json.message;
+  post.tag     = json.tag;
   post.save(function(err) {
     if (err) {
       console.log(err);
-      return;
+      process.exit();
     }
+
+    console.log("completed save:");
+    findByName(post.name);
   });
 }
 
 function find() {
-  console.log("exec find");
   _Post.find({}, function(err, docs) {
     if(docs.length === 0) {
       console.log("count zero");
-      return;
+      process.exit();
     }
 
     console.log(docs);
+    process.exit();
   });
 }
 
 
 function findByName(name) {
-  console.log("exec find");
   _Post.findByName(name, function(err, docs) {
     if(docs.length === 0) {
-      console.log("count zero");
-      return;
+      console.log("empty");
+      process.exit();
     }
 
     console.log(docs);
+    process.exit();
+  });
+}
+
+function remove() {
+  _Post.remove({}, function(err) {
+    if (err) {
+      console.log(err);
+      process.exit();
+    }
+
+    console.log("completed remove");
+    process.exit();
   });
 }
