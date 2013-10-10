@@ -1,8 +1,9 @@
 {
   "name" : "yyyyy",
+  "images" : {"icons" : ["./icon.png", "./icon2.png", "./icon3.png"], "background":"./background.png"},
   "comments" : [
     {"title" : "abc", "body" : "xxxxx"},
     {"title" : "def", "body" : "yyyyy"},
     {"title" : "ghi", "body" : "zzzzz"}],
-  "tag" : ["AAA","BBB","CCC"]
+  "tags" : ["AAA","BBB","CCC"]
 }

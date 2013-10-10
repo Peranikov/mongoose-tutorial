@@ -19,8 +19,24 @@ switch (_cmd) {
   case "uc" :
     updateComments();
     break;
+  case "ui" :
+    updateIcons();
+    break;
   case "r" :
     remove();
+    break;
+  case "at" :
+    var name = process.argv[3];
+    var tags = [];
+
+    for (var i = 4; i < process.argv.length; i++) {
+      tags.push(process.argv[i]);
+    }
+
+    addTags(name, tags);
+    break;
+  case "rs" :
+    removeAndSave();
     break;
   default :
     console.log("not found command:" + _cmd);
@@ -31,9 +47,10 @@ function save() {
   var json = require('./input');
 
   var post = new _Post();
-  post.name    = json.name;
+  post.name     = json.name;
+  post.images   = json.images;
   post.comments = json.comments;
-  post.tag     = json.tag;
+  post.tags      = json.tags;
   post.save(function(err) {
     if (err) {
       console.log(err);
@@ -42,6 +59,36 @@ function save() {
 
     console.log("completed save:");
     findByName(post.name);
+  });
+}
+
+function updateIcons() {
+  var json = require('./input');
+  _Post.updateIcon(json.name, json.images.icons, function(err, numberAffected, raw) {
+    if (err) {
+      console.log(err);
+      process.exit();
+    }
+
+    console.log('The number of updated documents was %d', numberAffected);
+    console.log('The raw response from Mongo was %d', raw);
+    console.log("completed update icon:");
+    findByName(json.name);
+  });
+}
+
+function addTags(name, tags) {
+  var json = require('./input');
+  _Post.addTags(name, tags, function(err, numberAffected, raw) {
+    if (err) {
+      console.log(err);
+      process.exit();
+    }
+
+    console.log('The number of updated documents was %d', numberAffected);
+    console.log('The raw response from Mongo was %d', raw);
+    console.log("completed update icon:");
+    findByName(name);
   });
 }
 
@@ -109,5 +156,17 @@ function remove() {
 
     console.log("completed remove");
     process.exit();
+  });
+}
+
+function removeAndSave() {
+  _Post.remove({}, function(err) {
+    if (err) {
+      console.log(err);
+      process.exit();
+    }
+
+    console.log("completed remove");
+    save();
   });
 }

@@ -9,12 +9,28 @@ var Post = new _mongoose.Schema({
       body  : String,
       votes : {type: Number, default: 0},
     }],
-    tag     : [String],
+    images : {
+      icons : [String],
+      background : String
+    },
+    tags     : [String],
     created : {type: Date, default: Date.now},
 });
 
 Post.statics.findByName = function(name, cb) {
-  this.findOne({"name" : name}, cb);
+  this.find({"name" : name}, cb);
+};
+
+Post.statics.updateIcon = function(name, icons, cb) {
+  var query  = {name:name};
+  var update = {'images.icons':icons};
+  this.update(query, update, cb);
+};
+
+Post.statics.addTags = function(name, tags, cb) {
+  var query  = {name:name};
+  var update = {$addToSet:{'tags': {$each: tags}}};
+  this.update(query, update, cb);
 };
 
 Post.statics.countUpVotes = function(name, title, cb) {
