@@ -1,5 +1,8 @@
-var _Post  = require('./model').Post;
-var _cmd = process.argv[2];
+ var _Post   = require('./model').Post;
+var _cmd    = process.argv[2];
+var _config = require("config");
+
+console.log("db : " + _config.db);
 
 switch (_cmd) {
   case "s" :
@@ -87,7 +90,7 @@ function addTags(name, tags) {
 
     console.log('The number of updated documents was %d', numberAffected);
     console.log('The raw response from Mongo was %d', raw);
-    console.log("completed update icon:");
+    console.log("completed update tags:");
     findByName(name);
   });
 }

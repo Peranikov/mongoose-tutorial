@@ -1,6 +1,6 @@
+var _config   = require("config");
 var _mongoose = require("mongoose");
-var _database = 'practice';
-var _db = _mongoose.connect('mongodb://localhost/' + _database);
+var _db = _mongoose.connect('mongodb://localhost/' + _config.db);
 
 var Post = new _mongoose.Schema({
     name    : String,
